@@ -13,6 +13,7 @@ public interface APIService {
                          @Query("startDate") String startDate,
                          @Query("endDate") String endDate,
                          @Query("words") String words,
-                         @Query("categories") String categories
+                         @Query("categories") String categories,
+                         @Query("page") int page
     );
 }

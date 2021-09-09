@@ -20,8 +20,8 @@ public class NewsAPI {
 
     private APIService service = retrofit.create(APIService.class);
 
-    public Call<Post> getAPI(int size, String startDate, String endDate, String words, String categories) {
-        Call<Post> call = service.fetchNews(size, startDate, endDate, words, categories);
+    public Call<Post> getAPI(int size, String startDate, String endDate, String words, String categories, int page) {
+        Call<Post> call = service.fetchNews(size, startDate, endDate, words, categories, page);
         return call;
     }
 

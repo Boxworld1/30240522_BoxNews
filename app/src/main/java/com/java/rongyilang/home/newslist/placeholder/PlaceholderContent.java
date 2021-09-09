@@ -53,8 +53,8 @@ public class PlaceholderContent {
         String nowTime = formatter.format(date);
         Log.d("", nowTime);
 
-        if (type.equals("推荐")) call = newsAPI.getAPI(30, "", nowTime, "", "");
-        else call = newsAPI.getAPI(30, "", nowTime, "", type);
+        if (type.equals("推荐")) call = newsAPI.getAPI(30, "", nowTime, "", "", 1);
+        else call = newsAPI.getAPI(30, "", nowTime, "", type, 1);
 
         call.enqueue(new Callback<Post>() {
             @Override
