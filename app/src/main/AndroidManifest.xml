@@ -16,6 +16,11 @@
         <activity
             android:name="com.java.rongyilang.DetailActivity"
             android:exported="true" />
+
+        <activity
+            android:name="com.java.rongyilang.SearchActivity"
+            android:exported="true" />
+
         <activity
             android:name="com.java.rongyilang.MainActivity"
             android:exported="true"

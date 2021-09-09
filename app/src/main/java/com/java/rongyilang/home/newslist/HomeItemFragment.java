@@ -84,7 +84,7 @@ public class HomeItemFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void update() {
-        mPlaceholderContent = new PlaceholderContent(mType, recyclerView, mDataBase);
+        mPlaceholderContent = new PlaceholderContent(mType, viewRoot, mDataBase);
 
         mPlaceholderContent.updateData(news -> {
             mActivity.runOnUiThread(()->{

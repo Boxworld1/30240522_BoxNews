@@ -1,10 +1,13 @@
 package com.java.rongyilang.search;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,31 +16,30 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.java.rongyilang.R;
-import com.java.rongyilang.search.placeholder.PlaceholderContent;
+import com.java.rongyilang.database.DataBase;
+import com.java.rongyilang.history.placeholder.HistoryPlaceholderContent;
+import com.java.rongyilang.search.placeholder.SearchPlaceholderContent;
 
-/**
- * A fragment representing a list of Items.
- */
 public class SearchItemFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
+    private static final String ARG_TYPE = "type";
+    public Activity mActivity;
+    private String mType;
+    public Context mContext;
+    public View viewRoot;
+    public DataBase mDataBase;
+    public RecyclerView recyclerView;
+    public SearchPlaceholderContent mSearchPlaceholderContent;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public SearchItemFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static SearchItemFragment newInstance(int columnCount) {
+    public static SearchItemFragment newInstance(String type) {
         SearchItemFragment fragment = new SearchItemFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putString(ARG_TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,26 +49,28 @@ public class SearchItemFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            mType = getArguments().getString(ARG_TYPE);
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search_list, container, false);
-
+        viewRoot = inflater.inflate(R.layout.fragment_history_list, container, false);
+        mDataBase = DataBase.getInstance(viewRoot.getContext());
+        mActivity = getActivity();
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new SearchItemAdapter(PlaceholderContent.ITEMS));
+        if (viewRoot instanceof RecyclerView) {
+            mContext = viewRoot.getContext();
+            recyclerView = (RecyclerView) viewRoot;
+            recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
+                    DividerItemDecoration.VERTICAL));
+
+            mSearchPlaceholderContent = new SearchPlaceholderContent(mDataBase, viewRoot, recyclerView,"", "", "", "");
         }
-        return view;
+        return viewRoot;
     }
+
 }

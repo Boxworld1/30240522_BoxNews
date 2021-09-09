@@ -1,7 +1,9 @@
 package com.java.rongyilang.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -16,7 +18,10 @@ import android.widget.ImageView;
 
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.tabs.TabLayout;
+import com.java.rongyilang.DetailActivity;
+import com.java.rongyilang.MainActivity;
 import com.java.rongyilang.R;
+import com.java.rongyilang.SearchActivity;
 import com.java.rongyilang.home.newslist.HomeItemFragment;
 import com.java.rongyilang.utils.NewsType;
 
@@ -52,6 +57,22 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View viewRoot = inflater.inflate(R.layout.fragment_home, container, false);
+
+        SearchView searchView = viewRoot.findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent = new Intent(getContext(), SearchActivity.class);
+                intent.putExtra("QueryKeyword", query);
+                getContext().startActivity(intent);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         ImageView button = viewRoot.findViewById(R.id.nav_button);
         DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);

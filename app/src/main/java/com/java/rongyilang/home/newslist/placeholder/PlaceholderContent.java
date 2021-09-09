@@ -2,6 +2,7 @@ package com.java.rongyilang.home.newslist.placeholder;
 
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
+import android.view.View;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,11 +36,11 @@ public class PlaceholderContent {
     public final Map<String, PlaceholderItem> ITEM_MAP = new HashMap<String, PlaceholderItem>();
 
     public String type;
-    public RecyclerView viewRoot;
+    public View viewRoot;
     public DataBase dataBase;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public PlaceholderContent(String mType, RecyclerView mViewRoot, DataBase mDataBase) {
+    public PlaceholderContent(String mType, View mViewRoot, DataBase mDataBase) {
         type = mType;
         viewRoot = mViewRoot;
         dataBase = mDataBase;
@@ -74,7 +75,7 @@ public class PlaceholderContent {
                     String mVideo = newsData.getVideo();
                     String mCategory = newsData.getCategory();
 
-                    addItem(createPlaceholderItem(mID, mTitle, mText, mTime, mAuthor, mImage, mVideo, mCategory));
+                    //addItem(createPlaceholderItem(mID, mTitle, mText, mTime, mAuthor, mImage, mVideo, mCategory));
 
                     new Thread(()->{
                         List<MyData> list = DataBase.getInstance(viewRoot.getContext()).getDataUao().findDataByID(mID);
@@ -90,7 +91,7 @@ public class PlaceholderContent {
                     }).start();
 
                 }
-                viewRoot.setAdapter(new HomeItemAdapter(ITEMS));
+                //viewRoot.setAdapter(new HomeItemAdapter(ITEMS));
 
             }
             @Override

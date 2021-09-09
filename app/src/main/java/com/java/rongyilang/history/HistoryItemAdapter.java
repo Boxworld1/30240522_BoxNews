@@ -17,10 +17,6 @@ import com.java.rongyilang.history.placeholder.HistoryPlaceholderContent;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link HistoryPlaceholderContent.HistoryPlaceholderItem}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemAdapter.ViewHolder> {
 
     private final List<HistoryPlaceholderContent.HistoryPlaceholderItem> mValues;

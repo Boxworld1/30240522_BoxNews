@@ -101,4 +101,5 @@
     <string name="close">close</string>
     <string name="content_description_close">Close now page</string>
     <string name="top_search_title">搜索</string>
+    <string name="search_hint">输入关键字搜索</string>
 </resources>
