@@ -13,11 +13,6 @@ import com.java.rongyilang.R;
 import com.java.rongyilang.database.DataBase;
 import com.java.rongyilang.favourite.FavouriteItemFragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HistoryFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class HistoryFragment extends Fragment {
 
     public Activity mActivity;

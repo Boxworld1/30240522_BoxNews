@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,6 +60,8 @@ public class HomeItemFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
+                    DividerItemDecoration.VERTICAL));
             PlaceholderContent placeholderContent = new PlaceholderContent(mType, recyclerView);
 
             //recyclerView.setAdapter(new HomeItemAdapter(placeholderContent.ITEMS));

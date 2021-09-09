@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,8 +16,6 @@ import android.view.ViewGroup;
 import com.java.rongyilang.R;
 import com.java.rongyilang.database.DataBase;
 import com.java.rongyilang.favourite.placeholder.FavouritePlaceholderContent;
-import com.java.rongyilang.history.HistoryItemAdapter;
-import com.java.rongyilang.history.placeholder.HistoryPlaceholderContent;
 
 /**
  * A fragment representing a list of Items.
@@ -27,7 +26,9 @@ public class FavouriteItemFragment extends Fragment {
     private Activity mActivity;
     private String mType;
     public View viewRoot;
-    public DataBase dataBase;
+    public DataBase mDataBase;
+    public Context mContext;
+    public RecyclerView recyclerView;
     public FavouritePlaceholderContent mFavouritePlaceholderContent;
 
     public FavouriteItemFragment() {
@@ -46,28 +47,28 @@ public class FavouriteItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         viewRoot = inflater.inflate(R.layout.fragment_favourite_list, container, false);
-        dataBase = DataBase.getInstance(viewRoot.getContext());
+        mDataBase = DataBase.getInstance(viewRoot.getContext());
         mActivity = getActivity();
         // Set the adapter
         if (viewRoot instanceof RecyclerView) {
+            mContext = viewRoot.getContext();
+            recyclerView = (RecyclerView) viewRoot;
+            recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
+                    DividerItemDecoration.VERTICAL));
             update();
         }
         return viewRoot;
     }
 
     public void update() {
-        if (viewRoot instanceof RecyclerView) {
-            Context context = viewRoot.getContext();
-            RecyclerView recyclerView = (RecyclerView) viewRoot;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            mFavouritePlaceholderContent = new FavouritePlaceholderContent(dataBase);
+        mFavouritePlaceholderContent = new FavouritePlaceholderContent(mDataBase);
 
-            mFavouritePlaceholderContent.updateData(news -> {
-                mActivity.runOnUiThread(()->{
-                    recyclerView.setAdapter(new FavouriteItemAdapter(news));
-                });
+        mFavouritePlaceholderContent.updateData(news -> {
+            mActivity.runOnUiThread(()->{
+                recyclerView.setAdapter(new FavouriteItemAdapter(news));
             });
-        }
+        });
     }
 
 }
