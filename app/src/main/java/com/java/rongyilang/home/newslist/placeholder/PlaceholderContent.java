@@ -7,11 +7,13 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.exoplayer2.util.Log;
+import com.java.rongyilang.R;
+import com.java.rongyilang.database.DataBase;
+import com.java.rongyilang.database.MyData;
 import com.java.rongyilang.home.newslist.HomeItemAdapter;
 import com.java.rongyilang.model.NewsData;
 import com.java.rongyilang.model.Post;
 import com.java.rongyilang.utils.NewsAPI;
-import com.java.rongyilang.utils.NewsType;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,11 +33,11 @@ public class PlaceholderContent {
     public final Map<String, PlaceholderItem> ITEM_MAP = new HashMap<String, PlaceholderItem>();
 
     public String type;
-    public RecyclerView view;
+    public RecyclerView viewRoot;
 
-    public PlaceholderContent(String type, RecyclerView view) {
+    public PlaceholderContent(String type, RecyclerView viewRoot) {
         this.type = type;
-        this.view = view;
+        this.viewRoot = viewRoot;
         updateData();
     }
 
@@ -63,18 +65,32 @@ public class PlaceholderContent {
                 for (int i = 0; i < post.getData().size(); i++) {
                     NewsData newsData = post.getData().get(i);
                     Log.d("", "Category = " + newsData.getCategory());
-                    addItem(createPlaceholderItem(
-                            newsData.getNewsID(),
-                            newsData.getTitle(),
-                            newsData.getContent(),
-                            newsData.getPublishTime(),
-                            newsData.getPublisher(),
-                            newsData.getImage(),
-                            newsData.getVideo(),
-                            newsData.getCategory()
-                    ));
+                    String mID = newsData.getNewsID();
+                    String mTitle = newsData.getTitle();
+                    String mText = newsData.getContent();
+                    String mTime = newsData.getPublishTime();
+                    String mAuthor = newsData.getPublisher();
+                    List<String> mImage = newsData.getImage();
+                    String mVideo = newsData.getVideo();
+                    String mCategory = newsData.getCategory();
+
+                    addItem(createPlaceholderItem(mID, mTitle, mText, mTime, mAuthor, mImage, mVideo, mCategory));
+
+                    new Thread(()->{
+                        List<MyData> list = DataBase.getInstance(viewRoot.getContext()).getDataUao().findDataByID(mID);
+                        MyData myData;
+                        if (list.size() == 0) {
+                            myData = new MyData(mID, mImage, mTime, mVideo, mTitle, mText,
+                                    mAuthor, mCategory, false, false);
+                        } else {
+                            myData = list.get(0);
+                        }
+
+                        DataBase.getInstance(viewRoot.getContext()).getDataUao().insertData(myData);
+                    }).start();
+
                 }
-                view.setAdapter(new HomeItemAdapter(ITEMS));
+                viewRoot.setAdapter(new HomeItemAdapter(ITEMS));
 
             }
             @Override

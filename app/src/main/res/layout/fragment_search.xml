@@ -8,18 +8,40 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="56dp"
+        android:orientation="horizontal">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="@string/top_search_title"
-            app:menu="@menu/top_search_bar"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+        <ImageView
+            android:id="@+id/search_close_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_baseline_keyboard_arrow_left_24"/>
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_searchBar"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_search_box"
+            app:layout_constraintTop_toTopOf="parent"
+            app:iconifiedByDefault="false"/>
+
+        <ImageView
+            android:id="@+id/search_more_button"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="3dp"
+            android:src="@drawable/ic_baseline_menu_24"/>
+    </LinearLayout>
+
 
     <FrameLayout
         android:id="@+id/search_list_container"
