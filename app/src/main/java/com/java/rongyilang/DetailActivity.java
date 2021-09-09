@@ -58,6 +58,7 @@ public class DetailActivity extends AppCompatActivity {
                         mAuthor, mCategory, true, false);
             } else {
                 myData = list.get(0);
+                myData.isHistory = true;
                 runOnUiThread(()->{
                     if (myData.isFavourite) menuItemFav.setIcon(R.drawable.ic_baseline_star_24);
                     else menuItemFav.setIcon(R.drawable.ic_baseline_star_outline_24);
