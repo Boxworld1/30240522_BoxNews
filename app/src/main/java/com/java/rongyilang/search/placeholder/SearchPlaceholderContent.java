@@ -13,8 +13,10 @@ import com.java.rongyilang.model.NewsData;
 import com.java.rongyilang.model.Post;
 import com.java.rongyilang.search.SearchItemAdapter;
 import com.java.rongyilang.utils.NewsAPI;
+import com.java.rongyilang.utils.SearchNewsCall;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -25,20 +27,21 @@ public class SearchPlaceholderContent {
 
     public final List<SearchPlaceholderItem> ITEMS = new ArrayList<SearchPlaceholderItem>();
     public DataBase mDataBase;
-    public View mViewRoot;
-    public RecyclerView mRecyclerView;
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public SearchPlaceholderContent(DataBase dataBase, View viewRoot, RecyclerView recyclerView, String keyword, String startDate, String endDate, String type) {
+    public SearchPlaceholderContent(DataBase dataBase) {
         mDataBase = dataBase;
-        mViewRoot = viewRoot;
-        mRecyclerView = recyclerView;
+    }
+
+    public void updateData(SearchNewsCall newsCall, String keyword, String startDate, String endDate, String type) {
+        ITEMS.clear();
 
         NewsAPI newsAPI = new NewsAPI();
         Call<Post> call;
+        
+        Log.d("", "In updateData with values { " + keyword + " , " + startDate + " , " + endDate + " , " + type + " }");
 
+        //addItem(createPlaceholderItem("214235", "On9", "3241w3523", "4352", " 432523", a, "", "o"));
         call = newsAPI.getAPI(30, startDate, endDate, keyword, type, 1);
-
 
         call.enqueue(new Callback<Post>() {
             @Override
@@ -46,7 +49,7 @@ public class SearchPlaceholderContent {
                 Post post = response.body();
                 for (int i = 0; i < post.getData().size(); i++) {
                     NewsData newsData = post.getData().get(i);
-                    Log.d("", "Category = " + newsData.getCategory());
+                    Log.d("", "Title = " + newsData.getTitle());
                     String mID = newsData.getNewsID();
                     String mTitle = newsData.getTitle();
                     String mText = newsData.getContent();
@@ -59,7 +62,9 @@ public class SearchPlaceholderContent {
                     addItem(createPlaceholderItem(mID, mTitle, mText, mTime, mAuthor, mImage, mVideo, mCategory));
 
                 }
-                mRecyclerView.setAdapter(new SearchItemAdapter(ITEMS));
+
+                Collections.reverse(ITEMS);
+                newsCall.callback(ITEMS);
 
             }
             @Override
@@ -68,9 +73,6 @@ public class SearchPlaceholderContent {
             }
         });
 
-    }
-
-    public void updateData() {
 
     }
 

@@ -15,14 +15,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.exoplayer2.util.Log;
 import com.java.rongyilang.R;
 import com.java.rongyilang.database.DataBase;
+import com.java.rongyilang.history.HistoryItemAdapter;
 import com.java.rongyilang.history.placeholder.HistoryPlaceholderContent;
 import com.java.rongyilang.search.placeholder.SearchPlaceholderContent;
+import com.java.rongyilang.utils.SearchNewsCall;
+
+import java.util.List;
 
 public class SearchItemFragment extends Fragment {
 
-    private static final String ARG_TYPE = "type";
+    private static final String ARG_TYPE = "";
+    private static final String ARG_KEYWORD = "";
+    private static final String ARG_START_DATE = "";
+    private static final String ARG_END_DATE = "";
     public Activity mActivity;
     private String mType;
     public Context mContext;
@@ -36,10 +44,14 @@ public class SearchItemFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static SearchItemFragment newInstance(String type) {
+    public static SearchItemFragment newInstance(String keyword, String startDate,
+                                                 String endDate, String type) {
         SearchItemFragment fragment = new SearchItemFragment();
         Bundle args = new Bundle();
         args.putString(ARG_TYPE, type);
+        args.putString(ARG_KEYWORD, keyword);
+        args.putString(ARG_START_DATE, startDate);
+        args.putString(ARG_END_DATE, endDate);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,9 +80,22 @@ public class SearchItemFragment extends Fragment {
             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
                     DividerItemDecoration.VERTICAL));
 
-            mSearchPlaceholderContent = new SearchPlaceholderContent(mDataBase, viewRoot, recyclerView,"", "", "", "");
         }
         return viewRoot;
+    }
+
+    public void update(String keyword, String startDate, String endDate, String type) {
+        mSearchPlaceholderContent = new SearchPlaceholderContent(mDataBase);
+        Log.d("", "In ItemFragment: keyword=" + keyword);
+        mSearchPlaceholderContent.updateData(new SearchNewsCall() {
+            @Override
+            public void callback(List<SearchPlaceholderContent.SearchPlaceholderItem> news) {
+                mActivity.runOnUiThread(() -> {
+                    recyclerView.setAdapter(new SearchItemAdapter(news));
+                });
+            }
+        }, keyword, startDate, endDate, type);
+
     }
 
 }

@@ -34,8 +34,8 @@ public class HistoryFragment extends Fragment {
 
         historyItemFragment = new HistoryItemFragment();
 
-        getFragmentManager().beginTransaction().
-                add(R.id.his_list_container, historyItemFragment).commit();
+        getFragmentManager().beginTransaction()
+                .add(R.id.his_list_container, historyItemFragment).commit();
 
 
         return viewRoot;
