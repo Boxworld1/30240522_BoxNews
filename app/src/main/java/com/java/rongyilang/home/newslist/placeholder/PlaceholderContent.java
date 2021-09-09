@@ -13,9 +13,11 @@ import com.java.rongyilang.database.MyData;
 import com.java.rongyilang.home.newslist.HomeItemAdapter;
 import com.java.rongyilang.model.NewsData;
 import com.java.rongyilang.model.Post;
+import com.java.rongyilang.utils.HomeNewsCall;
 import com.java.rongyilang.utils.NewsAPI;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,16 +36,14 @@ public class PlaceholderContent {
 
     public String type;
     public RecyclerView viewRoot;
+    public DataBase dataBase;
 
-    public PlaceholderContent(String type, RecyclerView viewRoot) {
-        this.type = type;
-        this.viewRoot = viewRoot;
-        updateData();
-    }
-
-    /* TODO */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void updateData() {
+    public PlaceholderContent(String mType, RecyclerView mViewRoot, DataBase mDataBase) {
+        type = mType;
+        viewRoot = mViewRoot;
+        dataBase = mDataBase;
+
         NewsAPI newsAPI = new NewsAPI();
 
         Call<Post> call;
@@ -98,6 +98,27 @@ public class PlaceholderContent {
                 Log.d("", "response: " + t.toString());
             }
         });
+    }
+
+    public void updateData(HomeNewsCall newsCall) {
+        ITEMS.clear();
+        new Thread(()->{
+            List<MyData> list;
+            if (type.equals("推荐")) {
+                list = dataBase.getDataUao().displayAll();
+            } else {
+                list = dataBase.getDataUao().findDataByCategory(type);
+            }
+
+            for (int i = 0; i < list.size(); i++) {
+                MyData nowData = list.get(i);
+                addItem(createPlaceholderItem(nowData.newsID, nowData.title, nowData.content,
+                        nowData.publishTime, nowData.publisher, nowData.image, nowData.video,
+                        nowData.category));
+            }
+            Collections.reverse(ITEMS);
+            newsCall.callback(ITEMS);
+        }).start();
 
     }
 

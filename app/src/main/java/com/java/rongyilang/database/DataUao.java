@@ -25,6 +25,9 @@ public interface DataUao {
     @Query("SELECT * FROM " + tableName + " WHERE newsID = :newsID")
     List<MyData> findDataByID(String newsID);
 
+    @Query("SELECT * FROM " + tableName + " WHERE category = :category")
+    List<MyData> findDataByCategory(String category);
+
     @Query("SELECT * FROM " + tableName + " WHERE isHistory = 1")
     List<MyData> searchHistoryData();
 
