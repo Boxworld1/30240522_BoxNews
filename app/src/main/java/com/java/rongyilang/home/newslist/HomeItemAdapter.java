@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -55,14 +56,34 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.ViewHo
         holder.mAuthorView.setText(mAuthor);
 
         if (mImage.size() == 0) {
+
             holder.mImageView.setVisibility(View.GONE);
+
+        }  else if (mImage.size() >= 4){
+
+            holder.mTextLayout.setVisibility(View.GONE);
+            holder.mImageLayout.setVisibility(View.VISIBLE);
+
+            Glide.with(holder.itemView.getContext())
+                    .load(mImage.get(0))
+                    .centerCrop()
+                    .into(holder.mImageView1);
+
+            Glide.with(holder.itemView.getContext())
+                    .load(mImage.get(1))
+                    .centerCrop()
+                    .into(holder.mImageView2);
+
         } else {
+
             holder.mImageView.setVisibility(View.VISIBLE);
             Glide.with(holder.itemView.getContext())
                     .load(mImage.get(0))
                     .centerCrop()
                     .into(holder.mImageView);
+
         }
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +115,10 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.ViewHo
         public final TextView mTextView;
         public final TextView mAuthorView;
         public final ImageView mImageView;
+        public final ImageView mImageView1;
+        public final ImageView mImageView2;
+        public final LinearLayout mTextLayout;
+        public final LinearLayout mImageLayout;
         public PlaceholderItem mItem;
 
         public ViewHolder(FragmentItemBinding binding) {
@@ -103,6 +128,10 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.ViewHo
             mTextView = binding.itemText;
             mAuthorView = binding.itemAuthor;
             mImageView = binding.itemImage;
+            mTextLayout = binding.itemTextLayout;
+            mImageLayout = binding.itemImageLayout;
+            mImageView1 = binding.itemImage1;
+            mImageView2 = binding.itemImage2;
         }
 
     }

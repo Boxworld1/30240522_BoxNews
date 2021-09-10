@@ -92,14 +92,18 @@ public class DetailActivity extends AppCompatActivity {
         mAuthorView.setText(mAuthor);
         mTextView.setText(mText);
 
-        SimpleExoPlayer player = new SimpleExoPlayer.Builder(this).build();
-        PlayerView playerView = findViewById(R.id.detail_video);
-        playerView.setPlayer(player);
+        if (mVideo.contains("http")) {
+            Log.d("", "video url=[" + mVideo + "]");
+            SimpleExoPlayer player = new SimpleExoPlayer.Builder(this).build();
+            PlayerView playerView = findViewById(R.id.detail_video);
+            playerView.setVisibility(View.VISIBLE);
+            playerView.setPlayer(player);
 
-        MediaItem mediaItem = MediaItem.fromUri(mVideo);
-        player.setMediaItem(mediaItem);
-        player.prepare();
-        player.play();
+            MediaItem mediaItem = MediaItem.fromUri(mVideo);
+            player.setMediaItem(mediaItem);
+            player.prepare();
+            player.play();
+        }
 
         for (int i = 0; i < mImage.size(); i++) {
             ImageView detailImage = (ImageView) getLayoutInflater()
