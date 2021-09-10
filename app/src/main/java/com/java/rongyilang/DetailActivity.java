@@ -4,6 +4,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +14,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Log;
+import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.chip.Chip;
 import com.java.rongyilang.database.DataBase;
@@ -23,6 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
+
+//    SimpleExoPlayer absPlayerInternal;
+//    PlayerView pvMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +81,6 @@ public class DetailActivity extends AppCompatActivity {
             DataBase.getInstance(this).getDataUao().insertData(myData);
         }).start();
 
-
         TextView mTitleView = findViewById(R.id.detail_title);
         TextView mTimeView = findViewById(R.id.detail_time);
         TextView mTextView = findViewById(R.id.detail_text);
@@ -79,6 +91,15 @@ public class DetailActivity extends AppCompatActivity {
         mTimeView.setText(mTime);
         mAuthorView.setText(mAuthor);
         mTextView.setText(mText);
+
+        SimpleExoPlayer player = new SimpleExoPlayer.Builder(this).build();
+        PlayerView playerView = findViewById(R.id.detail_video);
+        playerView.setPlayer(player);
+
+        MediaItem mediaItem = MediaItem.fromUri(mVideo);
+        player.setMediaItem(mediaItem);
+        player.prepare();
+        player.play();
 
         for (int i = 0; i < mImage.size(); i++) {
             ImageView detailImage = (ImageView) getLayoutInflater()
@@ -113,4 +134,48 @@ public class DetailActivity extends AppCompatActivity {
         });
 
     }
+
+//    protected void onCreate(Bundle savedInstanceState, String url) {
+//
+//        int appNameStringRes = R.string.app_name;
+//
+//        pvMain = findViewById(R.id.detail_video); // creating player view
+//
+//        TrackSelector trackSelectorDef = new DefaultTrackSelector();
+//        absPlayerInternal = ExoPlayerFactory.newSimpleInstance(this, trackSelectorDef); //creating a player instance
+//
+//        String userAgent = Util.getUserAgent(this, this.getString(appNameStringRes));
+//        DefaultDataSourceFactory defdataSourceFactory = new DefaultDataSourceFactory(this,userAgent);
+//        Uri uriOfContentUrl = Uri.parse(url);
+//        MediaSource mediaSource = new ProgressiveMediaSource.Factory(defdataSourceFactory).createMediaSource(uriOfContentUrl);  // creating a media source
+//
+//        absPlayerInternal.prepare(mediaSource);
+//        absPlayerInternal.setPlayWhenReady(true); // start loading video and play it at the moment a chunk of it is available offline
+//
+//        pvMain.setPlayer(absPlayerInternal); // attach surface to the view
+//    }
+//
+//    private void pausePlayer(SimpleExoPlayer player) {
+//        if (player != null) {
+//            player.setPlayWhenReady(false);
+//        }
+//    }
+//
+//    private void playPlayer(SimpleExoPlayer player) {
+//        if (player != null) {
+//            player.setPlayWhenReady(true);
+//        }
+//    }
+//
+//    private void stopPlayer(){
+//        pvMain.setPlayer(null);
+//        absPlayerInternal.release();
+//        absPlayerInternal = null;
+//    }
+//
+//    private void seekTo(SimpleExoPlayer player, long positionInMS) {
+//        if (player != null) {
+//            player.seekTo(positionInMS);
+//        }
+//    }
 }
