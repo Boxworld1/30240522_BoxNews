@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.tabs.TabLayout;
@@ -58,19 +59,12 @@ public class HomeFragment extends Fragment {
 
         View viewRoot = inflater.inflate(R.layout.fragment_home, container, false);
 
-        SearchView searchView = viewRoot.findViewById(R.id.search_view);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        LinearLayout searchView = viewRoot.findViewById(R.id.search_view);
+        searchView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public void onClick(View view) {
                 Intent intent = new Intent(getContext(), SearchActivity.class);
-                intent.putExtra("QueryKeyword", query);
                 getContext().startActivity(intent);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
             }
         });
 

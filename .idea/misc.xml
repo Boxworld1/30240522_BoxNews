@@ -23,7 +23,7 @@
         <entry key="app/src/main/res/layout/fragment_history.xml" value="0.20364583333333333" />
         <entry key="app/src/main/res/layout/fragment_history_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_history_list.xml" value="0.15070921985815602" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_item.xml" value="0.31409300091485026" />
         <entry key="app/src/main/res/layout/fragment_item_list.xml" value="0.1693840579710145" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.213768115942029" />
@@ -38,6 +38,7 @@
         <entry key="app/src/main/res/layout/nav_view.xml" value="0.1693840579710145" />
         <entry key="app/src/main/res/layout/navigation_drawer.xml" value="0.335" />
         <entry key="app/src/main/res/layout/search_drawer.xml" value="0.22189375548622237" />
+        <entry key="app/src/main/res/layout/search_item.xml" value="0.2453125" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/menu/horizontal_menu.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/menu/top_detail_bar.xml" value="0.3098958333333333" />
@@ -54,5 +55,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.22189375548622237" />
+      </ProjectState>
+    </option>
   </component>
 </project>
