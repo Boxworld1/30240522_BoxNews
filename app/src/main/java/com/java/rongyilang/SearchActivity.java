@@ -12,8 +12,11 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -30,7 +33,10 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
-
+    private String mKeyword = "";
+    private String mStartDate = "";
+    private String mEndDate = "";
+    private String mType = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,14 +47,7 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.fragment_search);
-
-        String mKeyword = getIntent().getStringExtra("QueryKeyword");
-        String mStartDate = "";
-        String mEndDate = "";
-        String mType = "";
-
-        Log.d("", "Query word = " + mKeyword);
-        SearchView mSearchView = findViewById(R.id.search_searchBar);
+        mKeyword = getIntent().getStringExtra("QueryKeyword");
 
         SearchItemFragment searchItemFragment = SearchItemFragment.newInstance(mKeyword, mStartDate, mEndDate, mType);
 
@@ -57,19 +56,47 @@ public class SearchActivity extends AppCompatActivity {
 
         searchItemFragment.update(mKeyword, mStartDate, mEndDate, mType);
 
-        ImageView buttonClose = findViewById(R.id.search_close_button);
-        ImageView buttonFilter = findViewById(R.id.search_filter_button);
+        SearchView mSearchView = findViewById(R.id.search_searchBar);
 
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mKeyword = query;
+                searchItemFragment.update(mKeyword, mStartDate, mEndDate, mType);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        Spinner spinner = findViewById(R.id.search_category_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.search_categories, android.R.layout.simple_spinner_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mType = (String) adapterView.getSelectedItem();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        ImageView buttonClose = findViewById(R.id.search_close_button);
         buttonClose.setOnClickListener((View.OnClickListener) view -> {
             finish();
         });
 
-        buttonFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        ImageView buttonFilter = findViewById(R.id.search_filter_button);
+        DrawerLayout drawerLayout = findViewById(R.id.search_drawer_layout);
+        buttonFilter.setOnClickListener(view -> drawerLayout.openDrawer(Gravity.RIGHT));
     }
 
 }

@@ -39,6 +39,7 @@ public class SearchPlaceholderContent {
         Call<Post> call;
         
         Log.d("", "In updateData with values { " + keyword + " , " + startDate + " , " + endDate + " , " + type + " }");
+        if (type.equals("全部")) type = "";
 
         //addItem(createPlaceholderItem("214235", "On9", "3241w3523", "4352", " 432523", a, "", "o"));
         call = newsAPI.getAPI(30, startDate, endDate, keyword, type, 1);
@@ -49,7 +50,7 @@ public class SearchPlaceholderContent {
                 Post post = response.body();
                 for (int i = 0; i < post.getData().size(); i++) {
                     NewsData newsData = post.getData().get(i);
-                    Log.d("", "Title = " + newsData.getTitle());
+                    Log.d("", "Category = " + newsData.getCategory());
                     String mID = newsData.getNewsID();
                     String mTitle = newsData.getTitle();
                     String mText = newsData.getContent();

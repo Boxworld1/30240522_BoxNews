@@ -102,4 +102,22 @@
     <string name="content_description_close">Close now page</string>
     <string name="top_search_title">搜索</string>
     <string name="search_hint">输入关键字搜索</string>
+    <string name="search_drawer_title">进阶搜索</string>
+    <string name="search_category">分类：</string>
+    <string name="search_start_date">起始日期：</string>
+    <string name="search_end_date">结束日期：</string>
+
+    <string-array name="search_categories">
+        <item>全部</item>
+        <item>娱乐</item>
+        <item>军事</item>
+        <item>教育</item>
+        <item>文化</item>
+        <item>健康</item>
+        <item>财经</item>
+        <item>体育</item>
+        <item>汽车</item>
+        <item>科技</item>
+        <item>社会</item>
+    </string-array>
 </resources>
