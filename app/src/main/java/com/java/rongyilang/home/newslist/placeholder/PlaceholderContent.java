@@ -79,16 +79,16 @@ public class PlaceholderContent {
                     //addItem(createPlaceholderItem(mID, mTitle, mText, mTime, mAuthor, mImage, mVideo, mCategory));
 
                     new Thread(()->{
-                        List<MyData> list = DataBase.getInstance(viewRoot.getContext()).getDataUao().findDataByID(mID);
+                        List<MyData> list = DataBase.getInstance(viewRoot.getContext())
+                                .getDataUao().findDataByID(mID);
                         MyData myData;
                         if (list.size() == 0) {
                             myData = new MyData(mID, mImage, mTime, mVideo, mTitle, mText,
                                     mAuthor, mCategory, false, false);
-                        } else {
-                            myData = list.get(0);
+                            DataBase.getInstance(viewRoot.getContext())
+                                    .getDataUao().insertData(myData);
                         }
 
-                        DataBase.getInstance(viewRoot.getContext()).getDataUao().insertData(myData);
                     }).start();
 
                 }

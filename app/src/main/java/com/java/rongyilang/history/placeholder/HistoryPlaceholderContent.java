@@ -33,6 +33,7 @@ public class HistoryPlaceholderContent {
             Log.d("His", "DB count = " + list.size());
             for (int i = 0; i < list.size(); i++) {
                 MyData nowData = list.get(i);
+                Log.d("", "Title = " + nowData.title);
                 addItem(createPlaceholderItem(nowData.newsID, nowData.title, nowData.content,
                         nowData.publishTime, nowData.publisher, nowData.image, nowData.video,
                         nowData.category));
