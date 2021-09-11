@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,15 +50,25 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.ViewHo
         String mID = holder.mItem.id;
         String mVideo = holder.mItem.video;
         String mCategory = holder.mItem.category;
+        boolean mIsHistory = holder.mItem.isHistory;
+
 
         holder.mTitleView.setText(mTitle);
         holder.mTimeView.setText(mTime);
         holder.mTextView.setText(mText);
         holder.mAuthorView.setText(mAuthor);
 
+        if (mIsHistory) {
+            holder.mTitleView.setTextColor(Color.parseColor("#828282"));
+        } else {
+            holder.mTitleView.setTextColor(Color.parseColor("#000000"));
+        }
+
         if (mImage.size() == 0) {
 
             holder.mImageView.setVisibility(View.GONE);
+            holder.mTextLayout.setVisibility(View.VISIBLE);
+            holder.mImageLayout.setVisibility(View.GONE);
 
         }  else if (mImage.size() >= 4){
 
@@ -77,6 +88,9 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.ViewHo
         } else {
 
             holder.mImageView.setVisibility(View.VISIBLE);
+            holder.mTextLayout.setVisibility(View.VISIBLE);
+            holder.mImageLayout.setVisibility(View.GONE);
+
             Glide.with(holder.itemView.getContext())
                     .load(mImage.get(0))
                     .centerCrop()

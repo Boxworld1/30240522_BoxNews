@@ -1,8 +1,10 @@
 package com.java.rongyilang.home;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -26,6 +28,8 @@ import com.java.rongyilang.SearchActivity;
 import com.java.rongyilang.home.newslist.HomeItemFragment;
 import com.java.rongyilang.utils.NewsType;
 
+import java.util.List;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeFragment#newInstance} factory method to
@@ -35,6 +39,7 @@ public class HomeFragment extends Fragment {
 
     private TabLayout tabLayout;
     private ChipGroup chipGroup;
+    public NewsListPagerAdapter newsListPagerAdapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -84,8 +89,10 @@ public class HomeFragment extends Fragment {
         setTabLayout();
 
         ViewPager viewPager = viewRoot.findViewById(R.id.pager);
-        viewPager.setOffscreenPageLimit(10);
-        viewPager.setAdapter(new NewsListPagerAdapter(getChildFragmentManager()));
+        viewPager.setOffscreenPageLimit(5);
+
+        newsListPagerAdapter = new NewsListPagerAdapter(getChildFragmentManager());
+        viewPager.setAdapter(newsListPagerAdapter);
 
         tabLayout.setupWithViewPager(viewPager);
         return viewRoot;
@@ -103,16 +110,29 @@ public class HomeFragment extends Fragment {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void update() {
+
+        for (int i = 0; i < newsListPagerAdapter.homeItemCount; i++)
+            newsListPagerAdapter.homeItemFragment[i].update();
+    }
+
 }
 
 class NewsListPagerAdapter extends FragmentStatePagerAdapter {
+    public HomeItemFragment[] homeItemFragment = new HomeItemFragment[20];
+    public int homeItemCount = 0;
     public NewsListPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
     @Override
     public Fragment getItem(int i) {
-        return HomeItemFragment.newInstance(NewsType.typeDisplay[i]);
+
+        HomeItemFragment nowHomeItemFragment = HomeItemFragment.newInstance(NewsType.typeDisplay[i]);
+        homeItemFragment[homeItemCount] = nowHomeItemFragment;
+        homeItemCount++;
+        return nowHomeItemFragment;
     }
 
     @Override
@@ -124,4 +144,5 @@ class NewsListPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return NewsType.typeDisplay[position];
     }
+
 }

@@ -1,14 +1,17 @@
 package com.java.rongyilang;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 
+import com.google.android.exoplayer2.util.Log;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -112,8 +115,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onResume() {
+        homeFragment.update();
         historyFragment.update();
         favouriteFragment.update();
         super.onResume();
@@ -189,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 changeFragmentHome();
+                homeFragment.update();
                 break;
             case R.id.navigation_history:
                 changeFragmentHistory();

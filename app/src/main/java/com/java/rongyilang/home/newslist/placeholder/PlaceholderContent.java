@@ -19,6 +19,7 @@ import com.java.rongyilang.utils.NewsAPI;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -56,8 +57,8 @@ public class PlaceholderContent {
         String nowTime = formatter.format(date);
         Log.d("", nowTime);
 
-        if (type.equals("推荐")) call = newsAPI.getAPI(30, "", nowTime, "", "", 1);
-        else call = newsAPI.getAPI(30, "", nowTime, "", type, 1);
+        if (type.equals("推荐")) call = newsAPI.getAPI(15, "", nowTime, "", "", 1);
+        else call = newsAPI.getAPI(15, "", nowTime, "", type, 1);
 
         call.enqueue(new Callback<Post>() {
             @Override
@@ -111,11 +112,13 @@ public class PlaceholderContent {
                 list = dataBase.getDataUao().findDataByCategory(type);
             }
 
+            Collections.sort(list, (o1, o2) -> (o1.publishTime).compareTo(o2.publishTime));
+
             for (int i = 0; i < list.size(); i++) {
                 MyData nowData = list.get(i);
                 addItem(createPlaceholderItem(nowData.newsID, nowData.title, nowData.content,
                         nowData.publishTime, nowData.publisher, nowData.image, nowData.video,
-                        nowData.category));
+                        nowData.category, nowData.isHistory));
             }
             Collections.reverse(ITEMS);
             newsCall.callback(ITEMS);
@@ -130,8 +133,8 @@ public class PlaceholderContent {
 
     private PlaceholderItem createPlaceholderItem(String id, String title, String text,
                                                   String time, String author, List<String> image,
-                                                  String video, String category) {
-        return new PlaceholderItem(id, title, text, time, author, image, video, category);
+                                                  String video, String category, boolean isHistory) {
+        return new PlaceholderItem(id, title, text, time, author, image, video, category, isHistory);
     }
 
     public class PlaceholderItem {
@@ -143,10 +146,11 @@ public class PlaceholderContent {
         public final String video;
         public final String category;
         public final List<String> image;
+        public final boolean isHistory;
 
         public PlaceholderItem(String id, String title, String text,
                                String time, String author, List<String> image,
-                               String video, String category) {
+                               String video, String category, boolean isHistory) {
             this.id = id;
             this.time = time;
             this.text = text;
@@ -155,6 +159,7 @@ public class PlaceholderContent {
             this.author = author;
             this.video = video;
             this.category = category;
+            this.isHistory = isHistory;
         }
 
     }
