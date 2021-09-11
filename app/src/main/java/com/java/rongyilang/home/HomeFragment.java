@@ -113,15 +113,15 @@ public class HomeFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void update() {
 
-        for (int i = 0; i < newsListPagerAdapter.homeItemCount; i++)
-            newsListPagerAdapter.homeItemFragment[i].update();
+        for (int i = 0; i < NewsType.typeDisplayCount; i++)
+            if (newsListPagerAdapter.homeItemFragment[i] != null)
+                newsListPagerAdapter.homeItemFragment[i].update();
     }
 
 }
 
 class NewsListPagerAdapter extends FragmentStatePagerAdapter {
-    public HomeItemFragment[] homeItemFragment = new HomeItemFragment[20];
-    public int homeItemCount = 0;
+    public HomeItemFragment[] homeItemFragment = new HomeItemFragment[1000];
     public NewsListPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -130,8 +130,8 @@ class NewsListPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int i) {
 
         HomeItemFragment nowHomeItemFragment = HomeItemFragment.newInstance(NewsType.typeDisplay[i]);
-        homeItemFragment[homeItemCount] = nowHomeItemFragment;
-        homeItemCount++;
+        homeItemFragment[i] = nowHomeItemFragment;
+
         return nowHomeItemFragment;
     }
 

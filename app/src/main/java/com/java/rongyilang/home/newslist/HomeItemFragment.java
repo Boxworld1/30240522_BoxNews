@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.java.rongyilang.R;
 import com.java.rongyilang.database.DataBase;
@@ -33,6 +35,7 @@ public class HomeItemFragment extends Fragment {
     public Context mContext;
     public View viewRoot;
     public PlaceholderContent mPlaceholderContent;
+    public SwipeRefreshLayout swipeRefreshLayout;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -68,16 +71,26 @@ public class HomeItemFragment extends Fragment {
         mDataBase = DataBase.getInstance(viewRoot.getContext());
         mActivity = getActivity();
         // Set the adapter
-        if (viewRoot instanceof RecyclerView) {
-            mContext = viewRoot.getContext();
-            recyclerView = (RecyclerView) viewRoot;
-            recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
-                    DividerItemDecoration.VERTICAL));
 
-            //recyclerView.setAdapter(new HomeItemAdapter(placeholderContent.ITEMS));
-            update();
-        }
+        mContext = viewRoot.getContext();
+        recyclerView = (RecyclerView) viewRoot.findViewById(R.id.home_recycler_view_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
+                DividerItemDecoration.VERTICAL));
+
+        //recyclerView.setAdapter(new HomeItemAdapter(placeholderContent.ITEMS));
+
+        swipeRefreshLayout = (SwipeRefreshLayout) viewRoot
+                .findViewById(R.id.home_swipe_refresh_layout);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                update();
+            }
+        });
+
+        update();
 
         return viewRoot;
     }
@@ -89,6 +102,7 @@ public class HomeItemFragment extends Fragment {
         mPlaceholderContent.updateData(news -> {
             mActivity.runOnUiThread(()->{
                 recyclerView.setAdapter(new HomeItemAdapter(news));
+                swipeRefreshLayout.setRefreshing(false);
             });
         });
     }
