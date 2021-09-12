@@ -87,12 +87,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
 
-                NewsType.typeDisplayCount = 0;
-
-                for (int i = 0; i < NewsType.TYPE_COUNT; i++)
-                    if (NewsType.status[i]) {
-                        NewsType.typeDisplay[NewsType.typeDisplayCount++] = NewsType.TYPES[i];
-                    }
+//                NewsType.typeDisplayCount = 0;
+//                for (int i = 0; i < NewsType.TYPE_COUNT; i++)
+//                    if (NewsType.status[i]) {
+//                        NewsType.typeDisplay[NewsType.typeDisplayCount++] = NewsType.TYPES[i];
+//                    }
 
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -139,10 +138,28 @@ public class MainActivity extends AppCompatActivity {
                     chipGroup.removeView(chip);
                     chipGroup2.addView(chip);
                     NewsType.status[nowI] = false;
+
+                    boolean flag = false;
+                    for (int j = 0; j < NewsType.typeDisplayCount; j++) {
+                        if (NewsType.typeDisplay[j].equals(NewsType.TYPES[nowI])) {
+                            flag = true;
+                            Log.d("", "removes " + NewsType.typeDisplay[j]);
+                        }
+                        if (flag) NewsType.typeDisplay[j] = NewsType.typeDisplay[j + 1];
+
+                        Log.d("", String.valueOf(j) + ":"  + NewsType.typeDisplay[j]);
+                    }
+                    NewsType.typeDisplayCount--;
                 } else {
                     chipGroup2.removeView(chip);
                     chipGroup.addView(chip);
                     NewsType.status[nowI] = true;
+
+                    NewsType.typeDisplay[NewsType.typeDisplayCount] = NewsType.TYPES[nowI];
+                    NewsType.typeDisplayCount++;
+
+                    for (int j = 0; j < NewsType.typeDisplayCount; j++)
+                        Log.d("", String.valueOf(j) + ":"  + NewsType.typeDisplay[j]);
                 }
             });
             chipGroup.addView(chip);

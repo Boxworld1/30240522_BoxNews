@@ -99,14 +99,19 @@ public class HomeFragment extends Fragment {
     }
 
     public void setTabLayout() {
-        int cnt = 0;
-        for (int i = 0; i < NewsType.TYPE_COUNT; i++)
-            if (NewsType.status[i]) {
-                tabLayout.addTab(tabLayout.newTab());
-                tabLayout.getTabAt(cnt).setText(NewsType.TYPES[i]);
-                NewsType.typeDisplay[cnt] = NewsType.TYPES[i];
-                cnt++;
-            }
+//        int cnt = 0;
+//        for (int i = 0; i < NewsType.TYPE_COUNT; i++)
+//            if (NewsType.status[i]) {
+//                tabLayout.addTab(tabLayout.newTab());
+//                tabLayout.getTabAt(cnt).setText(NewsType.TYPES[i]);
+//                NewsType.typeDisplay[cnt] = NewsType.TYPES[i];
+//                cnt++;
+//            }
+
+        for (int i = 0; i < NewsType.typeDisplayCount; i++) {
+            tabLayout.addTab(tabLayout.newTab());
+            tabLayout.getTabAt(i).setText(NewsType.typeDisplay[i]);
+        }
 
     }
 
