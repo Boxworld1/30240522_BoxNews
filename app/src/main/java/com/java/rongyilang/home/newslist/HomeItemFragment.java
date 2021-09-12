@@ -124,7 +124,7 @@ public class HomeItemFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void changeData(boolean isNewPage) {
-        mPlaceholderContent.getData(isNewPage);
+        mPlaceholderContent.getData(isNewPage, recyclerView.getAdapter().getItemCount());
 
         mPlaceholderContent.updateData(news -> {
             mActivity.runOnUiThread(()->{

@@ -40,18 +40,25 @@ public class PlaceholderContent {
     public View viewRoot;
     public DataBase dataBase;
     public int page = 1;
+    public boolean flag = false;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public PlaceholderContent(String mType, View mViewRoot, DataBase mDataBase) {
         type = mType;
         viewRoot = mViewRoot;
         dataBase = mDataBase;
-        getData(false);
+        getData(false, 0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void getData(boolean isNewPage) {
-        if (isNewPage) page++;
+    public void getData(boolean isNewPage, int newsCount) {
+        if (isNewPage) {
+            if (!flag) {
+                while (page * 15 < newsCount) page++;
+                flag = true;
+            }
+            if (flag) page++;
+        }
 
         NewsAPI newsAPI = new NewsAPI();
 

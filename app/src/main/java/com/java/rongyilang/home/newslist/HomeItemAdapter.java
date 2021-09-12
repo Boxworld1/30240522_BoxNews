@@ -33,7 +33,13 @@ public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.ViewHo
     }
 
     public void setItemAdapter(List<PlaceholderItem> items) {
+        int preSize = this.mValues.size();
+//        if (preSize > 0) {
+//            mValues.clear();
+//            notifyItemRangeChanged(0, preSize);
+//        }
         mValues = items;
+        notifyItemRangeChanged(0, items.size());
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

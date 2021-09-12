@@ -117,10 +117,9 @@ public class HomeFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void update() {
-
         for (int i = 0; i < NewsType.typeDisplayCount; i++)
             if (newsListPagerAdapter.homeItemFragment[i] != null)
-                newsListPagerAdapter.homeItemFragment[i].update();
+                newsListPagerAdapter.homeItemFragment[i].changeData(false);
     }
 
 }
