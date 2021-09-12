@@ -53,6 +53,13 @@
                 android:src="@drawable/ic_baseline_filter_list_24"/>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/search_fail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/search_fail"
+            android:visibility="gone"/>
 
         <FrameLayout
             android:id="@+id/search_list_container"
@@ -62,6 +69,7 @@
         </FrameLayout>
 
     </LinearLayout>
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"

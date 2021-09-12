@@ -89,7 +89,7 @@ public class HomeFragment extends Fragment {
         setTabLayout();
 
         ViewPager viewPager = viewRoot.findViewById(R.id.pager);
-        viewPager.setOffscreenPageLimit(5);
+        viewPager.setOffscreenPageLimit(10);
 
         newsListPagerAdapter = new NewsListPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(newsListPagerAdapter);

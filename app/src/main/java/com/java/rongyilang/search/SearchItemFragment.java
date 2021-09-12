@@ -11,9 +11,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.util.Log;
 import com.java.rongyilang.R;
@@ -91,7 +94,13 @@ public class SearchItemFragment extends Fragment {
             @Override
             public void callback(List<SearchPlaceholderContent.SearchPlaceholderItem> news) {
                 mActivity.runOnUiThread(() -> {
-                    recyclerView.setAdapter(new SearchItemAdapter(news));
+                    if (news.size() == 0) {
+                        Toast toast = Toast.makeText(viewRoot.getContext(), "找不到符合条件的內容！", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.TOP, 0, 0);
+                        toast.show();
+                    } else {
+                        recyclerView.setAdapter(new SearchItemAdapter(news));
+                    }
                 });
             }
         }, keyword, startDate, endDate, type);
