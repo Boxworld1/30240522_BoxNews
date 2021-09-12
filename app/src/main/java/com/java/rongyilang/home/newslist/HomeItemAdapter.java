@@ -27,11 +27,14 @@ import java.util.List;
  */
 public class HomeItemAdapter extends RecyclerView.Adapter<HomeItemAdapter.ViewHolder> {
 
-    private final List<PlaceholderItem> mValues;
+    private List<PlaceholderItem> mValues;
     public HomeItemAdapter(List<PlaceholderItem> items) {
         mValues = items;
     }
 
+    public void setItemAdapter(List<PlaceholderItem> items) {
+        mValues = items;
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 

@@ -127,8 +127,6 @@ public class DetailActivity extends AppCompatActivity {
                 });
 
             }).start();
-
-
             return true;
         });
 

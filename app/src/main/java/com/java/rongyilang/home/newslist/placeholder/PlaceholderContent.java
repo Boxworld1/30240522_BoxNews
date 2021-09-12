@@ -39,26 +39,33 @@ public class PlaceholderContent {
     public String type;
     public View viewRoot;
     public DataBase dataBase;
+    public int page = 1;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public PlaceholderContent(String mType, View mViewRoot, DataBase mDataBase) {
         type = mType;
         viewRoot = mViewRoot;
         dataBase = mDataBase;
+        getData(false);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void getData(boolean isNewPage) {
+        if (isNewPage) page++;
 
         NewsAPI newsAPI = new NewsAPI();
 
         Call<Post> call;
-
-        Log.d("", "type = " + type);
 
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         Date date = new Date(System.currentTimeMillis());
         String nowTime = formatter.format(date);
         Log.d("", nowTime);
 
-        if (type.equals("推荐")) call = newsAPI.getAPI(15, "", nowTime, "", "", 1);
-        else call = newsAPI.getAPI(15, "", nowTime, "", type, 1);
+        if (type.equals("推荐")) call = newsAPI.getAPI(15, "", nowTime, "", "", page);
+        else call = newsAPI.getAPI(15, "", nowTime, "", type, page);
+
+        Log.d("", "API {" + nowTime + "," + type + "," + page + "}");
 
         call.enqueue(new Callback<Post>() {
             @Override

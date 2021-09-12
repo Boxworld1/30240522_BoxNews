@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.exoplayer2.util.Log;
 import com.java.rongyilang.R;
 import com.java.rongyilang.database.DataBase;
 import com.java.rongyilang.history.HistoryItemAdapter;
@@ -36,6 +38,7 @@ public class HomeItemFragment extends Fragment {
     public View viewRoot;
     public PlaceholderContent mPlaceholderContent;
     public SwipeRefreshLayout swipeRefreshLayout;
+    private int lastVisibleItem;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -74,9 +77,12 @@ public class HomeItemFragment extends Fragment {
 
         mContext = viewRoot.getContext();
         recyclerView = (RecyclerView) viewRoot.findViewById(R.id.home_recycler_view_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
+        recyclerView.setLayoutManager(mLayoutManager);
+
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
+
 
         //recyclerView.setAdapter(new HomeItemAdapter(placeholderContent.ITEMS));
 
@@ -90,9 +96,43 @@ public class HomeItemFragment extends Fragment {
             }
         });
 
-        update();
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+                Log.d("", "last visible = " + lastVisibleItem);
+            }
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                Log.d("", "LAST = " + recyclerView.getAdapter().getItemCount());
+                if (newState == RecyclerView.SCROLL_STATE_IDLE &&
+                        (lastVisibleItem + 1 == recyclerView.getAdapter().getItemCount())) {
+                    Toast.makeText(viewRoot.getContext(), "加载中，请稍候···", Toast.LENGTH_LONG).show();
+
+                    changeData(true);
+                }
+            }
+        });
+
+        update();
         return viewRoot;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void changeData(boolean isNewPage) {
+        mPlaceholderContent.getData(isNewPage);
+
+        mPlaceholderContent.updateData(news -> {
+            mActivity.runOnUiThread(()->{
+                HomeItemAdapter homeItemAdapter = (HomeItemAdapter) recyclerView.getAdapter();
+                homeItemAdapter.setItemAdapter(news);
+                homeItemAdapter.notifyDataSetChanged();
+            });
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
