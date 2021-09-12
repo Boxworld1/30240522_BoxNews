@@ -108,7 +108,7 @@ public class HomeItemFragment extends Fragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                Log.d("", "LAST = " + recyclerView.getAdapter().getItemCount());
+                if (recyclerView.getAdapter() == null) return;
                 if (newState == RecyclerView.SCROLL_STATE_IDLE &&
                         (lastVisibleItem + 1 == recyclerView.getAdapter().getItemCount())) {
                     Toast.makeText(viewRoot.getContext(), "加载中，请稍候···", Toast.LENGTH_LONG).show();

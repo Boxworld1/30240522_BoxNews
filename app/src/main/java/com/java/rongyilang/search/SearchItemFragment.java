@@ -96,7 +96,7 @@ public class SearchItemFragment extends Fragment {
                 mActivity.runOnUiThread(() -> {
                     if (news.size() == 0) {
                         Toast toast = Toast.makeText(viewRoot.getContext(), "找不到符合条件的內容！", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.TOP, 0, 0);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
                     } else {
                         recyclerView.setAdapter(new SearchItemAdapter(news));
